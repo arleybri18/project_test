@@ -10,7 +10,7 @@ int main(void)
 	char *buffer;
 	size_t bufsize = 32;
 	size_t characters;
-	char delim[] = "   \n";
+	char delim[] = " \n";
 	/*string to save data result of strtok*/
 	char *string;
 	/*array with values for execve*/
@@ -33,7 +33,7 @@ int main(void)
 	{
 		
 		/*print promt*/
-		printf("yony$");
+		printf("#cisfun$");
 
 
 		/*getline*/
@@ -58,18 +58,18 @@ int main(void)
 		{
 			child_id = getpid();
 			parent_id = getppid();
-			printf("Este es el hijo %u mi padre es %u\n", child_id, parent_id);
+			/*printf("Este es el hijo %u mi padre es %u\n", child_id, parent_id);*/
 		
-			printf("commnads 0 es %s", commands[0]);
+			/*printf("commnads 0 es %s", commands[0]);*/
 			execve(commands[0],commands,env);
-			sleep(5);
+			sleep(1);
 		}
 		else
 		{
 			wait(&child_id);
 		}
 
-		printf("last line\n");
+		/*printf("last line\n");*/
 	}
 	free(buffer);
 	return 0;
