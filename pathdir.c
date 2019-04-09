@@ -9,13 +9,17 @@ typedef struct paths
   char *str;
   struct paths *next;
 }path;
-path **_extractpath(char *);
+path **_extractpath(path **head, char *);
 void print_list(const path *h);
 int main(int ac, char **av)
 {
   int i = 0;
+  path *head;
   char *pathstr;
   path **store_paths;
+
+  store_paths = NULL;
+  head = NULL;
 
  printf("env:%s\n", getenv(av[1]));
  /*printf("localenv:%s\n", _getenv(av[1]));*/
@@ -23,8 +27,8 @@ int main(int ac, char **av)
  printf("mi path es %s\n", pathstr);
 
  /*funcion para mostrar cada ruta del path*/
- store_paths = _extractpath(pathstr);
- /*print_list(*store_paths);*/
+ store_paths = _extractpath(&head, pathstr);
+ print_list(*store_paths);
  return (0);
  }
  
@@ -62,24 +66,32 @@ char *_getenv(const char *name)
      }
    return (NULL);
  }
-path **_extractpath(char *string)
+path **_extractpath(path **head, char *string)
 {
 	char *store_path;
-	int count = 1, len = 0;
-	path **head = NULL;
+	/*path *head;*/
 	path *newnode;
-	path *lastnode;
+	path *lastnode = *head;
+	
 	newnode = malloc(sizeof(path));
 	if (newnode == NULL)
 	  {
 	    free(newnode);
-	    return (0);
+	    return (NULL);
 	  }
+
 	store_path = strtok(string, ":");
 	newnode->str = store_path;
 	printf("new:%s", newnode->str);
 	newnode->next = NULL;
-	lastnode = *head;
+
+	if (*head == NULL)
+	{
+		*head = newnode;
+	}
+
+
+
 	while (store_path != NULL)
 	{
 	 store_path = strtok(NULL, ":");
@@ -90,9 +102,9 @@ path **_extractpath(char *string)
 	     return (0);
 	   }
 	 newnode->str = store_path;
-	 printf("newhile:%s", newnode->str);
 	 newnode->next = NULL;
 	 lastnode = *head;
+	
 	 while (lastnode->next)
 	   lastnode = lastnode->next;
 	 lastnode->next = newnode;
