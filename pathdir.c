@@ -114,18 +114,16 @@ path **_extractpath(path **head, char *string)
 void print_list(const path *h)
 {
   path *thisnode = (path *)h;
-  int nodes = 0;
-
+  
   while (thisnode != NULL)
     {
-      if (!thisnode->str)
+     if (!thisnode->str)
 	{
-	  thisnode->str = "(nil)";
+	  break;
 	  
 	}
       printf("%s\n", thisnode->str);
       thisnode = thisnode->next;
-      nodes++;
     }
   
 }
