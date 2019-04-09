@@ -20,8 +20,11 @@ int main(void)
 	int new_id, i, count = 1;
 	pid_t child_id, parent_id;
 	char *env[] = { "HOME=/usr/home", "LOGNAME=home", (char *)0 };
-	struct stat st; 
+	struct stat st;
+	int terminal = 0;
 
+
+	terminal = isatty(0);
 
 	buffer = (char *)malloc(bufsize * sizeof(char));
 	commands = malloc (30 * sizeof(char *));
@@ -31,21 +34,22 @@ int main(void)
 		perror("Unable to allocate buffer");
 		exit(1);
 	}
-
+	
 	while (1)
 	{
 		
 		/*print promt*/
 		printf("#cisfun$");
-
-
 		/*getline*/
 		characters = getline(&buffer, &bufsize, stdin);
+		if (characters == -1)
+			exit(98);
 
 		/*read string with strtok, split words in the buffer*/
 		string = strtok(buffer, delim);
 		/*save pointer to word into array commands*/
 		commands[0] = string;
+		count = 1;
 
 		while (string != NULL)
 		{
@@ -77,11 +81,15 @@ int main(void)
 		}
 		else
 		{
+
+			if (terminal == 0)
+				break;
 			wait(&child_id);
 		}
 
 		/*printf("last line\n");*/
 	}
+
 	free(buffer);
 	return 0;
 

@@ -14,14 +14,13 @@ int main(void)
 	/*string to save data result of strtok*/
 	char *string;
 	/*array with values for execve*/
-	char **commands;
+	char *commands[10];
 	int new_id, i, count = 1;
 	pid_t child_id, parent_id;
 	char *env[] = { "HOME=/usr/home", "LOGNAME=home", (char *)0 };
 
 
 	buffer = (char *)malloc(bufsize * sizeof(char));
-	commands = malloc (30 * sizeof(char *));
 
 	if (buffer = NULL)
 	{
@@ -43,6 +42,7 @@ int main(void)
 		string = strtok(buffer, delim);
 		/*save pointer to word into array commands*/
 		commands[0] = string;
+		count = 1;
 
 		while (string != NULL)
 		{
@@ -58,9 +58,7 @@ int main(void)
 		{
 			child_id = getpid();
 			parent_id = getppid();
-			/*printf("Este es el hijo %u mi padre es %u\n", child_id, parent_id);*/
 		
-			/*printf("commnads 0 es %s", commands[0]);*/
 			execve(commands[0],commands,env);
 			sleep(1);
 		}
@@ -72,6 +70,7 @@ int main(void)
 		/*printf("last line\n");*/
 	}
 	free(buffer);
+
 	return 0;
 
 }
